@@ -1,9 +1,9 @@
 <script setup>
 import Header from './components/Header.vue'
-
-const ipcHandle = () => window.electron.ipcRenderer.send('ping')
+import TimerInterface from "./components/timer/TimerInterface.vue";
 </script>
 
 <template>
   <Header/>
+  <TimerInterface/>
 </template>
