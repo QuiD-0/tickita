@@ -1,5 +1,7 @@
 <template>
-  <component :is="timerComponent" />
+  <div class="container">
+    <component :is="timerComponent" />
+  </div>
 </template>
 
 <script setup>
@@ -14,10 +16,21 @@ const timerComponent = computed(() => {
 
 function timerSelector(theme) {
   switch (theme) {
-    case 'analog':
-      return AnalogTimer
+    // case 'analog':
+    //   return AnalogTimer
     default:
       return DefaultTimer
   }
 }
 </script>
+
+<style scoped>
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vh;
+  height: 80vh;
+}
+</style>
