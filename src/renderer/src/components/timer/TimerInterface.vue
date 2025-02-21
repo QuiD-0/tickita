@@ -31,6 +31,6 @@ function timerSelector(theme) {
   justify-content: center;
   align-items: center;
   width: 100vh;
-  height: 80vh;
+  height: 75vh;
 }
 </style>

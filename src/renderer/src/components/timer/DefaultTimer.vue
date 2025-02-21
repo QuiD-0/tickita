@@ -10,16 +10,16 @@
   width: 70vh;
   height: 70vh;
   border-radius: 50%;
-  background-color: #ffffff;
+  background-color: var(--background-color);
   position: relative;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
 .clock__face {
-  width: 10px;
-  height: 10px;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
-  background-color: #000;
+  background-color: var(--text-color);
   position: relative;
   top: 50%;
   left: 50%;

@@ -1,3 +1,15 @@
+:root {
+  --text-color: #333;
+  --background-color: #fff;
+  --hover-background-color: #c1c1c1;
+}
+
+.dark {
+  --text-color: #fff;
+  --background-color: #333;
+  --hover-background-color: #555;
+}
+
 *,
 *::before,
 *::after {
@@ -11,6 +23,8 @@ ul {
 }
 
 body {
+  background-color: var(--background-color);
+  color: var(--text-color);
   min-height: 100vh;
   line-height: 1.6;
   font-family:

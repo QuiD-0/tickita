@@ -1,8 +1,10 @@
 <script setup>
+import EmptyBox from "./common/EmptyBox.vue";
 </script>
 
 <template>
   <div class="header"></div>
+  <EmptyBox height="30px" width="100%"/>
 </template>
 
 <style scoped>

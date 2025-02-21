@@ -1,5 +1,5 @@
 import { createStore } from 'vuex'
-import createPersistedState from 'vuex-persistedstate'
+import persistedState from 'vuex-persistedstate'
 
 let themeStore = createStore({
   state() {
@@ -12,7 +12,7 @@ let themeStore = createStore({
       state.theme = theme
     }
   },
-  plugins: [createPersistedState()]
+  plugins: [persistedState()]
 })
 
 export default themeStore

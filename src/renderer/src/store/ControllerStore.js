@@ -13,7 +13,10 @@ let ControllerStore = createStore({
       this.state.controller.isPaused = false;
     },
     pause(){
-      this.state.controller.isPaused = !this.state.controller.isPaused;
+      this.state.controller.isPaused = true;
+    },
+    resume(){
+      this.state.controller.isPaused = false;
     },
     stop(){
       this.state.controller.isRunning = false;
