@@ -104,7 +104,7 @@ const settingItems = [
   left: 0;
   top: 0;
   width: 100%;
-  height: 50%;
+  height: 47%;
   overflow: auto;
   background-color: var(--background-color);
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);

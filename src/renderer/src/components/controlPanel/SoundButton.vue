@@ -84,7 +84,7 @@ onMounted(() => {
   flex-direction: row;
   background-color: var(--background-color);
   border-radius: 10px;
-  padding: 10px;
+  padding: 15px 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 

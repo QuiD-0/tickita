@@ -6,10 +6,8 @@ let SoundStore = createStore({
     sounds: {
       clock: "white-noise.mp3",
       clock_volume: 30,
-      prev_clock_volume: 30,
       beep: "alarm-beep.mp3",
       beep_volume: 30,
-      prev_beep_volume: 30
     }
   },
   mutations: {
@@ -18,17 +16,7 @@ let SoundStore = createStore({
     },
     setBeepVolume(state, volume) {
       state.sounds.beep_volume = volume;
-    },
-    allMuted() {
-      this.state.sounds.prev_clock_volume = this.state.sounds.clock_volume;
-      this.state.sounds.prev_beep_volume = this.state.sounds.beep_volume;
-      this.state.sounds.clock_volume = 0;
-      this.state.sounds.beep_volume = 0;
-    },
-    allUnMuted() {
-      this.state.sounds.clock_volume = this.state.sounds.prev_clock_volume;
-      this.state.sounds.beep_volume = this.state.sounds.prev_beep_volume;
-    },
+    }
   },
   getters: {
     clockVolume: state => state.sounds.clock_volume,
