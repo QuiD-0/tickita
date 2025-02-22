@@ -37,7 +37,6 @@
 
 <script setup>
 import {defineProps, defineEmits, computed} from 'vue'
-import {useDark, useToggle} from "@vueuse/core";
 import EmptyBox from "../common/EmptyBox.vue";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import SettingStore from "../../store/SettingStore";
