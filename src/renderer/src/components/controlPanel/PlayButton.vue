@@ -28,7 +28,7 @@ const isPaused = computed(() => {
 
 function startTimer() {
   const start = document.getElementById('start')
-  const settings = document.getElementById('settings')
+  const settings = document.getElementById('not_play')
 
   start.style.transform = 'translateX(-30px)'
   start.style.opacity = '0'
@@ -51,7 +51,7 @@ function pauseTimer() {
 }
 
 function stopTimer() {
-  const settings = document.getElementById('settings')
+  const settings = document.getElementById('not_play')
   const pause = document.getElementById('pause-pause')
   const pausePlay = document.getElementById('pause-play')
   const stop = document.getElementById('stop')

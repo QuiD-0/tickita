@@ -53,9 +53,6 @@ const rest = computed(() => SettingStore.getters.restTime)
 const longBreak = computed(() => SettingStore.getters.longRestTime)
 const interval = computed(() => SettingStore.getters.interval)
 
-const dark = useDark()
-const toggle = useToggle(dark)
-
 const focusUp = () => {
   SettingStore.commit('increaseFocusTime')
 }

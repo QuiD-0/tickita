@@ -4,7 +4,6 @@ import persistedState from 'vuex-persistedstate'
 let SettingStore = createStore({
   state: {
     settings: {
-      isDarkMode: false,
       time: {
         focus: 25,
         rest: 5,
@@ -14,9 +13,6 @@ let SettingStore = createStore({
     }
   },
   mutations: {
-    toggleDarkMode() {
-      this.state.settings.isDarkMode = !this.state.settings.isDarkMode;
-    },
     increaseFocusTime() {
       if(this.state.settings.time.focus + this.state.settings.time.rest >= 60) {
         return;
