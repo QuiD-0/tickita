@@ -9,20 +9,67 @@ let SettingStore = createStore({
         focus: 25,
         rest: 5,
         longRest: 30,
-        shortCycles: 4,
-        loop: 0
+        interval: 4
       }
     }
   },
   mutations: {
     toggleDarkMode() {
       this.state.settings.isDarkMode = !this.state.settings.isDarkMode;
+    },
+    increaseFocusTime() {
+      if(this.state.settings.time.focus + this.state.settings.time.rest >= 60) {
+        return;
+      }
+      this.state.settings.time.focus += 5;
+    },
+    decreaseFocusTime() {
+      if(this.state.settings.time.focus <= 5) {
+        return;
+      }
+      this.state.settings.time.focus -= 5;
+    },
+    increaseRestTime() {
+      if(this.state.settings.time.focus + this.state.settings.time.rest >= 60) {
+        return;
+      }
+      this.state.settings.time.rest += 5;
+    },
+    decreaseRestTime() {
+      if(this.state.settings.time.rest <= 5) {
+        return;
+      }
+      this.state.settings.time.rest -= 5;
+    },
+    increaseLongRestTime() {
+      if(this.state.settings.time.longRest >= 60) {
+        return;
+      }
+      this.state.settings.time.longRest += 5;
+    },
+    decreaseLongRestTime() {
+      if(this.state.settings.time.longRest <= 5) {
+        return;
+      }
+      this.state.settings.time.longRest -= 5;
+    },
+    increaseInterval() {
+      this.state.settings.time.interval += 1;
+    },
+    decreaseInterval() {
+      if (this.state.settings.time.interval <= 1) {
+        return;
+      }
+      this.state.settings.time.interval -= 1;
     }
   },
   getters: {
-    isDarkMode: state => {
-      return state.settings.isDarkMode;
-    }
+    focusTime: state => state.settings.time.focus,
+    restTime: state => state.settings.time.rest,
+    longRestTime: state => state.settings.time.longRest,
+    interval: state => state.settings.time.interval,
   },
   plugins: [persistedState()]
 });
+
+export default SettingStore;

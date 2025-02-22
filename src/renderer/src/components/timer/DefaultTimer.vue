@@ -1,9 +1,23 @@
 <template>
   <div class="clock">
-    <div></div>
-    <div class="clock__face"></div>
+    <div class="clock__face">
+
+    </div>
   </div>
 </template>
+
+<script setup>
+
+import {computed} from "vue";
+import SettingStore from "../../store/SettingStore";
+
+const focus = computed(() => SettingStore.getters.focusTime);
+const rest = computed(() => SettingStore.getters.restTime);
+const longBreak = computed(() => SettingStore.getters.longRestTime);
+const interval = computed(() => SettingStore.getters.interval);
+
+</script>
+
 
 <style scoped>
 .clock {
@@ -26,7 +40,3 @@
   transform: translate(-50%, -50%);
 }
 </style>
-
-<script setup>
-
-</script>
