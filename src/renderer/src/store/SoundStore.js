@@ -4,8 +4,8 @@ import persistedState from "vuex-persistedstate";
 let SoundStore = createStore({
   state: {
     sounds: {
-      clock_volume: 30,
-      beep_volume: 30,
+      clock_volume: 20,
+      beep_volume: 20,
     }
   },
   mutations: {
