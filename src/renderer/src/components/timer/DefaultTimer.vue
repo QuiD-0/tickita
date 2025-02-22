@@ -8,14 +8,6 @@
 
 <script setup>
 
-import {computed} from "vue";
-import SettingStore from "../../store/SettingStore";
-
-const focus = computed(() => SettingStore.getters.focusTime);
-const rest = computed(() => SettingStore.getters.restTime);
-const longBreak = computed(() => SettingStore.getters.longRestTime);
-const interval = computed(() => SettingStore.getters.interval);
-
 </script>
 
 

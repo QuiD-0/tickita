@@ -4,9 +4,7 @@ import persistedState from "vuex-persistedstate";
 let SoundStore = createStore({
   state: {
     sounds: {
-      clock: "white-noise.mp3",
       clock_volume: 30,
-      beep: "alarm-beep.mp3",
       beep_volume: 30,
     }
   },
