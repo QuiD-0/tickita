@@ -1,76 +1,30 @@
 <template>
   <div class="clock">
-    <div class="clock__center" ref="centerRef"></div>
-    <div class="clock_hand" ref="minuteHandRef"></div>
     <div class="numbers" ref="numbersRef"></div>
-    <div class="remain" ref="remainRef"></div>
+    <div v-if="timer.currentPhase.value !== 'longRest'" ref="remainRef" class="focus"></div>
+    <div v-else class="longRest" ref="remainRef"></div>
+    <div class="clock_hand" ref="minuteHandRef"></div>
+    <div class="clock__center" ref="centerRef"></div>
   </div>
 </template>
 
 <script setup>
-import {ref, onMounted, computed, watch} from "vue";
-import ControllerStore from "../../store/ControllerStore";
-import SettingStore from "../../store/SettingStore";
-import useSound from "../common/sound";
+import {ref, onMounted} from "vue";
+import useTimer from "../common/timer";
 
-const sound = useSound()
 const remainRef = ref(null);
 const minuteHandRef = ref(null);
 const centerRef = ref(null);
 const numbersRef = ref(null);
-const settingFocusTime = computed(() => SettingStore.getters.focusTime);
-const settingShortBreakTime = computed(() => SettingStore.getters.restTime);
-const settingLongBreakTime = computed(() => SettingStore.getters.longRestTime);
-const settingInterval = computed(() => SettingStore.getters.interval);
-
-let remainFocus = ref(SettingStore.getters.focusTime);
-let remainRest = ref(SettingStore.getters.restTime);
-let remainLongRest = ref(SettingStore.getters.longRestTime);
-let remainInterval = ref(SettingStore.getters.interval);
-const SECONDS = 60;
-
-const runningState = computed(() => ControllerStore.getters.runningState);
-const currentPhase = ref("focus");
+let timer = useTimer();
 
 onMounted(() => {
   createNumbers();
   updateMinuteHand();
   setInterval(() => {
-    updateRemainTime();
     updateMinuteHand();
-    updateCurrentPhase();
   }, 1_000);
 });
-
-watch([settingFocusTime, settingShortBreakTime, settingLongBreakTime, settingInterval], () => {
-  remainFocus.value = settingFocusTime.value;
-  remainRest.value = settingShortBreakTime.value;
-  remainLongRest.value = settingLongBreakTime.value;
-  remainInterval.value = settingInterval.value;
-  ControllerStore.commit("stop");
-});
-
-watch(runningState, (state) => {
-  if (state === "init") {
-    remainFocus.value = settingFocusTime.value;
-    remainRest.value = settingShortBreakTime.value;
-    remainLongRest.value = settingLongBreakTime.value;
-    remainInterval.value = settingInterval.value;
-  }
-});
-
-watch(currentPhase, (value, oldValue, _) => {
-  console.log(oldValue, value);
-  if(oldValue === "focus" && value === "rest") {
-    sound.playBeep();
-  }
-  if(oldValue === "rest" && value === "focus") {
-    sound.playBeep();
-  }
-  if(oldValue === "longRest" && value === "focus") {
-    sound.playBeep();
-  }
-})
 
 function createNumbers() {
   if (!numbersRef.value) return;
@@ -94,73 +48,31 @@ function createNumbers() {
 }
 
 function updateMinuteHand() {
-  if (!minuteHandRef.value || !centerRef.value) return;
+  if (!minuteHandRef.value || !centerRef.value || !remainRef.value) return;
 
-  let degrees = getDegrees();
+  let totalDegree = timer.getRemainTime() / 60 * 6;
+  let remainFocusDegree = timer.getRemainFocusTime() / 60 * 6;
+  let remainRestDegree = timer.getRemainRestTime() / 60 * 6;
+  let remainLongRestDegree = timer.getRemainLongRestTime() / 60 * 6;
 
-  minuteHandRef.value.style.transform = `translate(-50%, -100%) rotate(${degrees}deg)`;
-  centerRef.value.style.transform = `translate(-50%, -50%) rotate(${degrees + 45}deg)`;
-}
+  minuteHandRef.value.style.transform = `translate(-50%, -100%) rotate(${totalDegree}deg)`;
+  centerRef.value.style.transform = `translate(-50%, -50%) rotate(${totalDegree + 45}deg)`;
 
-function getDegrees() {
-  let degrees;
-  if (currentPhase.value === "longRest") {
-    degrees = remainLongRest.value / 60 * 6;
-  } else {
-    degrees = (remainFocus.value / 60) * 6 + (remainRest.value / 60) * 6;
-  }
-  return degrees;
-}
+  let currentFocus = remainRef.value.style.getPropertyValue("--focus-degree");
+  let currentRest = remainRef.value.style.getPropertyValue("--rest-degree");
 
-function updateRemainTime() {
-  if (runningState.value !== "play") return
-
-  switch (currentPhase.value) {
-    case "focus":
-      remainFocus.value -= SECONDS;
-      if (remainFocus.value <= 0) remainFocus.value = 0;
-      break;
-    case "rest":
-      remainRest.value -= SECONDS;
-      if (remainRest.value <= 0) remainRest.value = 0;
-      break;
-    case "longRest":
-      remainLongRest.value -= SECONDS;
-      if (remainLongRest.value <= 0) remainLongRest.value = 0;
-      break;
-  }
-}
-
-function updateCurrentPhase() {
-  if (runningState.value !== "play") return
-
-  let focus = remainFocus.value;
-  let rest = remainRest.value;
-  let longRest = remainLongRest.value;
-  let interval = remainInterval.value;
-
-  if(focus !== 0 && rest !== 0 && longRest !== 0) {
-    currentPhase.value = "focus";
-  }
-
-  if(focus === 0 && rest !== 0 && longRest !== 0) {
-    currentPhase.value = "rest";
-  }
-
-  if(focus === 0 && rest === 0 && interval > 0 && longRest !== 0) {
-    remainInterval.value -= 1;
-    if(remainInterval.value === 0) {
-      currentPhase.value = "longRest";
-    } else {
-      currentPhase.value = "focus";
-      remainFocus.value = settingFocusTime.value;
-      remainRest.value = settingShortBreakTime.value;
+  if(timer.currentPhase.value === 'longRest') {
+    let currentLongRest = remainRef.value.style.getPropertyValue("--long-rest-degree");
+    if (currentLongRest !== `${remainLongRestDegree}deg`) {
+      remainRef.value.style.setProperty("--long-rest-degree", `${remainLongRestDegree}deg`);
     }
-  }
-
-  if(focus === 0 && rest === 0 && interval === 0 && longRest === 0) {
-    currentPhase.value = "focus";
-    ControllerStore.commit("stop");
+  } else {
+    if (currentFocus !== `${remainFocusDegree}deg`) {
+      remainRef.value.style.setProperty("--focus-degree", `${remainFocusDegree}deg`);
+    }
+    if (currentRest !== `${remainRestDegree}deg`) {
+      remainRef.value.style.setProperty("--rest-degree", `${remainRestDegree}deg`);
+    }
   }
 }
 </script>
@@ -189,7 +101,7 @@ function updateCurrentPhase() {
 
 .clock_hand {
   width: 3px;
-  height: 35%;
+  height: 100px;
   background-color: var(--text-color);
   position: absolute;
   top: 50%;
@@ -206,6 +118,60 @@ function updateCurrentPhase() {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+@property --focus-degree {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@property --rest-degree {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@property --long-rest-degree {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.focus {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: --focus-degree 0.3s ease-in-out, --rest-degree 0.3s ease-in-out;
+  background: conic-gradient(
+    var(--rest-color) 0deg,
+    var(--rest-color) var(--rest-degree),
+    var(--focus-color) var(--rest-degree),
+    var(--focus-color) calc(var(--rest-degree) + var(--focus-degree)),
+    transparent calc(var(--rest-degree) + var(--focus-degree)),
+    transparent 360deg
+  );
+}
+
+.longRest {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: --long-rest-degree 0.3s ease-in-out;
+  background: conic-gradient(
+    var(--long-rest-color) 0deg,
+    var(--long-rest-color) var(--long-rest-degree),
+    transparent var(--long-rest-degree),
+    transparent 360deg
+  );
 }
 
 .font1 {

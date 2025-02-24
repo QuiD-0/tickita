@@ -2,12 +2,18 @@
   --text-color: #333;
   --background-color: #fff;
   --hover-background-color: #c1c1c1;
+  --focus-color: #ffa0a0;
+  --rest-color: #aaffa0;
+  --long-rest-color: #9cccff;
 }
 
 .dark {
   --text-color: #ffffff;
   --background-color: #333;
   --hover-background-color: #555;
+  --focus-color: #a16767;
+  --rest-color: #7db179;
+  --long-rest-color: #769cc3;
 }
 
 *,
