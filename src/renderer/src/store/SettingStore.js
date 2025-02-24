@@ -5,49 +5,49 @@ let SettingStore = createStore({
   state: {
     settings: {
       time: {
-        focus: 25,
-        rest: 5,
-        longRest: 30,
+        focus: 25 * 60,
+        rest: 5 * 60,
+        longRest: 30 * 60,
         interval: 4
       }
     }
   },
   mutations: {
     increaseFocusTime() {
-      if(this.state.settings.time.focus + this.state.settings.time.rest >= 60) {
+      if(this.state.settings.time.focus + this.state.settings.time.rest >= 60 * 60) {
         return;
       }
-      this.state.settings.time.focus += 5;
+      this.state.settings.time.focus += 5 * 60;
     },
     decreaseFocusTime() {
-      if(this.state.settings.time.focus <= 5) {
+      if(this.state.settings.time.focus <= 5 * 60) {
         return;
       }
-      this.state.settings.time.focus -= 5;
+      this.state.settings.time.focus -= 5 * 60;
     },
     increaseRestTime() {
-      if(this.state.settings.time.focus + this.state.settings.time.rest >= 60) {
+      if(this.state.settings.time.focus + this.state.settings.time.rest >= 60 * 60) {
         return;
       }
-      this.state.settings.time.rest += 5;
+      this.state.settings.time.rest += 5 * 60;
     },
     decreaseRestTime() {
-      if(this.state.settings.time.rest <= 5) {
+      if(this.state.settings.time.rest <= 5 * 60) {
         return;
       }
-      this.state.settings.time.rest -= 5;
+      this.state.settings.time.rest -= 5 * 60;
     },
     increaseLongRestTime() {
-      if(this.state.settings.time.longRest >= 60) {
+      if(this.state.settings.time.longRest >= 60 * 60) {
         return;
       }
-      this.state.settings.time.longRest += 5;
+      this.state.settings.time.longRest += 5 * 60;
     },
     decreaseLongRestTime() {
-      if(this.state.settings.time.longRest <= 5) {
+      if(this.state.settings.time.longRest <= 5 * 60) {
         return;
       }
-      this.state.settings.time.longRest -= 5;
+      this.state.settings.time.longRest -= 5 * 60;
     },
     increaseInterval() {
       this.state.settings.time.interval += 1;

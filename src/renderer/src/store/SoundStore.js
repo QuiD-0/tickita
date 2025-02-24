@@ -18,7 +18,7 @@ let SoundStore = createStore({
   },
   getters: {
     clockVolume: state => state.sounds.clock_volume,
-    beepVolume: state => state.sounds.beep_volume
+    beepVolume: state => state.sounds.beep_volume,
   },
   plugins: [persistedState()]
 });

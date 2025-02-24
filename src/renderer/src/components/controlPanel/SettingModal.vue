@@ -47,9 +47,9 @@ const emit = defineEmits(['close'])
 const closeModal = () => {
   emit('close')
 }
-const focus = computed(() => SettingStore.getters.focusTime)
-const rest = computed(() => SettingStore.getters.restTime)
-const longBreak = computed(() => SettingStore.getters.longRestTime)
+const focus = computed(() => SettingStore.getters.focusTime / 60)
+const rest = computed(() => SettingStore.getters.restTime / 60)
+const longBreak = computed(() => SettingStore.getters.longRestTime / 60)
 const interval = computed(() => SettingStore.getters.interval)
 
 const focusUp = () => {

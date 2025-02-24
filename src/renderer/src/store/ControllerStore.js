@@ -5,12 +5,12 @@ let ControllerStore = createStore({
     controller: {
       isRunning: false,
       isPaused: false,
-      runningState: "init"
+      runningState: "init",
     }
   },
   mutations: {
     start(){
-      this.state.controller.runningState = "focus";
+      this.state.controller.runningState = "play";
       this.state.controller.isRunning = true;
       this.state.controller.isPaused = false;
     },
@@ -19,14 +19,8 @@ let ControllerStore = createStore({
       this.state.controller.isPaused = true;
     },
     resume(){
-      this.state.controller.runningState = "focus";
+      this.state.controller.runningState = "play";
       this.state.controller.isPaused = false;
-    },
-    finish(){
-      this.state.controller.runningState = "finish";
-    },
-    resting(){
-      this.state.controller.runningState = "rest";
     },
     stop(){
       this.state.controller.runningState = "init";
