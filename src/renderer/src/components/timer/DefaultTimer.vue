@@ -1,10 +1,13 @@
 <template>
-  <div class="clock">
-    <div class="numbers" ref="numbersRef"></div>
-    <div v-if="timer.currentPhase.value !== 'longRest'" ref="remainRef" class="focus"></div>
-    <div v-else class="longRest" ref="remainRef"></div>
-    <div class="clock_hand" ref="minuteHandRef"></div>
-    <div class="clock__center" ref="centerRef"></div>
+  <div class="clock_container">
+    <div class="clock">
+      <div class="numbers" ref="numbersRef"></div>
+      <div v-show="timer.currentPhase.value !== 'longRest'" ref="focusRef" class="focus"></div>
+      <div v-show="timer.currentPhase.value === 'longRest'" ref="longRestRef" class="longRest"></div>
+      <div class="clock_hand" ref="minuteHandRef"></div>
+      <div class="clock__center" ref="centerRef"></div>
+      <div class="clock_end" ref="endRef"></div>
+    </div>
   </div>
 </template>
 
@@ -12,22 +15,24 @@
 import {ref, onMounted} from "vue";
 import useTimer from "../common/timer";
 
-const remainRef = ref(null);
+const focusRef = ref(null);
+const longRestRef = ref(null);
 const minuteHandRef = ref(null);
 const centerRef = ref(null);
 const numbersRef = ref(null);
+const endRef = ref(null);
 let timer = useTimer();
 
 onMounted(() => {
-  createNumbers();
+  createClock();
   updateMinuteHand();
   setInterval(() => {
     updateMinuteHand();
   }, 1_000);
 });
 
-function createNumbers() {
-  if (!numbersRef.value) return;
+function createClock() {
+  if (!numbersRef.value || !endRef.value) return;
   numbersRef.value.innerHTML = "";
 
   for (let i = 0; i < 12; i++) {
@@ -44,11 +49,26 @@ function createNumbers() {
     span.classList.add("font1");
 
     numbersRef.value.appendChild(span);
+
+    const nx = 50 + 34.5 * Math.cos(angle * Math.PI / 180);
+    const ny = 50 + 34.5 * Math.sin(angle * Math.PI / 180);
+    const degree = angle + 90;
+
+    const end = document.createElement("div");
+    end.style.position = "absolute";
+    end.style.width = "2px";
+    end.style.height = "7px";
+    end.style.backgroundColor = "var(--text-color)";
+    end.style.left = `${nx}%`;
+    end.style.top = `${ny}%`;
+    end.style.transform = `translate(-50%, -50%) rotate(${degree}deg)`;
+
+    endRef.value.appendChild(end);
   }
 }
 
 function updateMinuteHand() {
-  if (!minuteHandRef.value || !centerRef.value || !remainRef.value) return;
+  if (!minuteHandRef.value || !centerRef.value || !focusRef.value || !longRestRef.value) return;
 
   let totalDegree = timer.getRemainTime() / 60 * 6;
   let remainFocusDegree = timer.getRemainFocusTime() / 60 * 6;
@@ -58,38 +78,35 @@ function updateMinuteHand() {
   minuteHandRef.value.style.transform = `translate(-50%, -100%) rotate(${totalDegree}deg)`;
   centerRef.value.style.transform = `translate(-50%, -50%) rotate(${totalDegree + 45}deg)`;
 
-  let currentFocus = remainRef.value.style.getPropertyValue("--focus-degree");
-  let currentRest = remainRef.value.style.getPropertyValue("--rest-degree");
-
-  if(timer.currentPhase.value === 'longRest') {
-    let currentLongRest = remainRef.value.style.getPropertyValue("--long-rest-degree");
-    if (currentLongRest !== `${remainLongRestDegree}deg`) {
-      remainRef.value.style.setProperty("--long-rest-degree", `${remainLongRestDegree}deg`);
-    }
+  if (timer.currentPhase.value === 'longRest') {
+    longRestRef.value.style.setProperty("--long-rest-degree", `${remainLongRestDegree}deg`);
   } else {
-    if (currentFocus !== `${remainFocusDegree}deg`) {
-      remainRef.value.style.setProperty("--focus-degree", `${remainFocusDegree}deg`);
-    }
-    if (currentRest !== `${remainRestDegree}deg`) {
-      remainRef.value.style.setProperty("--rest-degree", `${remainRestDegree}deg`);
-    }
+    focusRef.value.style.setProperty("--focus-degree", `${remainFocusDegree}deg`);
+    focusRef.value.style.setProperty("--rest-degree", `${remainRestDegree}deg`);
   }
 }
 </script>
 
 <style scoped>
+.clock_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
 .clock {
   width: 70vh;
   height: 70vh;
   border-radius: 50%;
   background-color: var(--background-color);
   position: relative;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
 .clock__center {
-  width: 20px;
-  height: 20px;
+  width: 30px;
+  height: 30px;
   background-color: var(--text-color);
   position: absolute;
   top: 50%;
@@ -101,7 +118,7 @@ function updateMinuteHand() {
 
 .clock_hand {
   width: 3px;
-  height: 100px;
+  height: 45px;
   background-color: var(--text-color);
   position: absolute;
   top: 50%;
@@ -155,6 +172,7 @@ function updateMinuteHand() {
     transparent calc(var(--rest-degree) + var(--focus-degree)),
     transparent 360deg
   );
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .longRest {
@@ -178,4 +196,5 @@ function updateMinuteHand() {
   font-size: calc(0.5rem + 2vmin);
   font-weight: 700;
 }
+
 </style>

@@ -19,7 +19,13 @@ import SoundButton from "./SoundButton.vue";
 </script>
 
 <style scoped>
-.clock__control,
+.clock__control {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70px;
+}
+
 .clock__control div {
   display: flex;
   justify-content: center;

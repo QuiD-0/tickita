@@ -17,7 +17,7 @@ let useTimer = () => {
 
   const runningState = computed(() => ControllerStore.getters.runningState);
   const currentPhase = ref("focus");
-  const SECONDS = 60;
+  const SECONDS = 1;
 
   onMounted(() => {
     setInterval(() => {
@@ -40,18 +40,18 @@ let useTimer = () => {
       remainRest.value = settingShortBreakTime.value;
       remainLongRest.value = settingLongBreakTime.value;
       remainInterval.value = settingInterval.value;
+      currentPhase.value = "focus";
     }
   });
 
   watch(currentPhase, (value, oldValue, _) => {
-    if(oldValue === "focus" && value === "rest") {
-      sound.playBeep();
-    }
-    if(oldValue === "rest" && value === "focus") {
-      sound.playBeep();
-    }
-    if(oldValue === "longRest" && value === "focus") {
-      sound.playBeep();
+    if(runningState.value === "play") {
+      if(oldValue === "focus" && value === "rest") {
+        sound.playBeep();
+      }
+      if(oldValue === "rest" && value === "focus") {
+        sound.playBeep();
+      }
     }
   })
 
