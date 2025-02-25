@@ -186,6 +186,7 @@ function updateMinuteHand() {
     transparent var(--long-rest-degree),
     transparent 360deg
   );
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .font1 {
