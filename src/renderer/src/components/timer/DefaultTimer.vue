@@ -113,7 +113,6 @@ function updateMinuteHand() {
   left: 50%;
   border-radius: 0 50% 50% 50%;
   transform: translate(-50%, -50%);
-  transition: transform 0.3s ease-in-out;
 }
 
 .clock_hand {
@@ -125,7 +124,6 @@ function updateMinuteHand() {
   left: 50%;
   transform-origin: 50% 100%;
   transform: translate(-50%, -100%) rotate(45deg);
-  transition: transform 0.3s ease-in-out;
 }
 
 .numbers {
@@ -163,7 +161,6 @@ function updateMinuteHand() {
   left: 50%;
   border-radius: 50%;
   transform: translate(-50%, -50%);
-  transition: --focus-degree 0.3s ease-in-out, --rest-degree 0.3s ease-in-out;
   background: conic-gradient(
     var(--rest-color) 0deg,
     var(--rest-color) var(--rest-degree),
@@ -183,7 +180,6 @@ function updateMinuteHand() {
   left: 50%;
   border-radius: 50%;
   transform: translate(-50%, -50%);
-  transition: --long-rest-degree 0.3s ease-in-out;
   background: conic-gradient(
     var(--long-rest-color) 0deg,
     var(--long-rest-color) var(--long-rest-degree),
