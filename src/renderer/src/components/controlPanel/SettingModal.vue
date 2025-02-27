@@ -1,15 +1,16 @@
 <template xmlns="http://www.w3.org/1999/html">
   <Teleport to="#modal_dest">
-    <Transition name="modal-background">
-      <div class="background" v-if="isOpen" @click="closeModal">
-      </div>
-    </Transition>
     <Transition name="modal">
       <div v-if="isOpen" class="modal">
         <EmptyBox height="30px" width="100%"/>
+        <div class="header">
+          <div class="close_button" @click="closeModal">
+            <font-awesome-icon icon="fa-solid fa-angle-left"/>
+          </div>
+          <div class="title">Settings</div>
+        </div>
         <div class="modal_content">
-
-          <div class="timer_setting">
+          <div class="setting_box">
             <div class="timer_setting_item" v-for="item in settingItems" :key="item.id">
               <div class="timer_setting_text">{{item.name}}</div>
               <div class="setting_value">
@@ -24,11 +25,6 @@
             </div>
           </div>
 
-        </div>
-        <div class="footer">
-          <div class="close_button" @click="closeModal">
-            <font-awesome-icon icon="fa-solid fa-angle-up"/>
-          </div>
         </div>
       </div>
     </Transition>
@@ -86,24 +82,13 @@ const settingItems = [
 </script>
 
 <style scoped>
-
-.background {
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-}
-
 .modal {
   position: fixed;
   z-index: 1;
   left: 0;
   top: 0;
   width: 100%;
-  height: 47%;
+  height: 100%;
   overflow: auto;
   background-color: var(--background-color);
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
@@ -111,11 +96,20 @@ const settingItems = [
   border-bottom-right-radius: 20px;
 }
 
-.timer_setting {
-  padding: 5px;
-  margin: 20px 0;
+.header {
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+}
+
+.title {
+  text-align: center;
+}
+
+.setting_box {
+  margin: 0;
+  padding: 10px;
   width: 100vh;
-  height: 100px;
   align-items: center;
   justify-content: space-evenly;
   display: flex;
@@ -151,14 +145,6 @@ const settingItems = [
   text-align: center;
 }
 
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-
 .close_button {
   width: 40px;
   height: 40px;
@@ -168,7 +154,7 @@ const settingItems = [
   align-items: center;
   margin: 10px;
   cursor: pointer;
-  transition: all 0.4s;
+  transition: all 0.3s;
 }
 
 .modal-enter-active,
@@ -179,28 +165,13 @@ const settingItems = [
 .modal-enter-from,
 .modal-leave-to {
   opacity: 0;
-  transform: translateY(-100%);
+  transform: translateY(100%);
 }
 
 .modal-enter-to,
 .modal-leave-from {
   opacity: 1;
   transform: translateY(0);
-}
-
-.modal-background-enter-active,
-.modal-background-leave-active {
-  transition: all 0.3s ease;
-}
-
-.modal-background-enter-from,
-.modal-background-leave-to {
-  opacity: 0;
-}
-
-.modal-background-enter-to,
-.modal-background-leave-from {
-  opacity: 1;
 }
 
 </style>
